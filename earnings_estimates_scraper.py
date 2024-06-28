@@ -12,7 +12,9 @@ class EarningsEstimates:
     def __init__(self, ticker: str, alpha_vantage_key: str) -> None:
         self.ticker = ticker.upper()
         self.key = alpha_vantage_key
-        self.base_export_path = f"{self._get_data_export_path()}\\{self.ticker}.csv"
+        parent = self._get_data_export_path()
+        self.base_export_path = f"{parent}\\{self.ticker}.csv"
+        os.makedirs(parent, exist_ok=True)
         # List of possible function parameters for financial report frequency.
         self.quarterly_params = [
             "q",
@@ -91,12 +93,40 @@ class EarningsEstimates:
                 merged_df = merged_df.drop_duplicates()
                 merged_df.to_csv(self.base_export_path, header=True, index=False)
                 return merged_df
+            else:
+                earnings_csv_data.set_index("fiscalDateEnding", inplace=True)
+                return earnings_csv_data
 
         except FileNotFoundError as e:
             print(f"[Error] {e}")
             earnings = self.get_earnings_estimates(frequency)
             earnings.to_csv(self.base_export_path, header=True, index=False)
             return earnings
+
+    """-------------------------------"""
+
+    def get_date_difference(self, target_date: str, compare_date: str):
+        """
+        Description: Calculates the difference between the "target_date" and "compare_date".
+
+        :param target_date: Main date.
+        :param compare_date: Date to compare agains the main_date.
+        :return: Integer
+        """
+
+        date_format = "%Y-%m-%d"
+
+        # Turn string dates into datetime objects.
+        target_date = dt.datetime.strptime(target_date, date_format)
+        compare_date = dt.datetime.strptime(compare_date, date_format)
+
+        # Check which date is larger. Subtract the smaller date from the larger date, to avoid negative values.
+        if target_date > compare_date:
+            delta = target_date - compare_date
+        else:
+            delta = compare_date - target_date
+        difference = delta.days
+        return difference
 
 
 if __name__ == "__main__":
@@ -108,3 +138,4 @@ if __name__ == "__main__":
     e = EarningsEstimates("AAPL", alpha_vantage_key=alpha_vantage_key)
 
     df = e.get_all_data()
+    print(f"DF: {df}")
