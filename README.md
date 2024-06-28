@@ -35,6 +35,7 @@
 - estimateEPS: The Earnings-Per-Share (EPS) estimated by analysts.
 - surprise: Nominal difference from the `reportedEPS` and the `estimatedEPS`. `surprise = reportedEPS - estimatedEPS`
 - surprisePercentage: Percentage difference between `reportedEPS` and `estimatedEPS`. `surprisePercentage = (surprise / estimatedEPS) \* 100`
+- reportTime: Which market period the earnings was released in.
 
 ```
                   reportedDate  reportedEPS  estimatedEPS  surprise  surprisePercentage   reportTime
