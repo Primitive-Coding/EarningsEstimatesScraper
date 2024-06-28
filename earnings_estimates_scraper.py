@@ -71,7 +71,7 @@ class EarningsEstimates:
 
     """-------------------------------"""
 
-    def get_all_data(self, frequency: str = "q"):
+    def get_earnings_estimates(self, frequency: str = "q"):
         # Number that decides if the program needs to fetch new data.
         date_threshold = 90
 
@@ -137,5 +137,5 @@ if __name__ == "__main__":
     alpha_vantage_key = os.getenv("alpha_vantage_key")
     e = EarningsEstimates("AAPL", alpha_vantage_key=alpha_vantage_key)
 
-    df = e.get_all_data()
+    df = e.get_earnings_estimates()
     print(f"DF: {df}")
