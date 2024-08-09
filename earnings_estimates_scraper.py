@@ -27,19 +27,27 @@ class EarningsEstimates:
 
     """-------------------------------"""
 
-    def _get_chrome_driver_path(self):
-        with open("config.json", "r") as file:
-            data = json.load(file)
-        path = data["chrome_driver_path"]
-        return path
-
-    """-------------------------------"""
-
     def _get_data_export_path(self):
-        with open("config.json", "r") as file:
-            data = json.load(file)
-        path = data["data_export_path"]
-        return path
+        try:
+            internal_path = f"{os.getcwd()}\\config.json"
+            with open(internal_path, "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            external_path = f"{os.getcwd()}\\EarningsEstimatesScraper\\config.json"
+            with open(external_path, "r") as file:
+                data = json.load(file)
+        return data["data_export_path"]
+
+    def _get_chrome_driver_path(self):
+        try:
+            internal_path = f"{os.getcwd()}\\config.json"
+            with open(internal_path, "r") as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            external_path = f"{os.getcwd()}\\EarningsEstimatesScraper\\config.json"
+            with open(external_path, "r") as file:
+                data = json.load(file)
+        return data["chrome_driver_path"]
 
     """-------------------------------"""
 
