@@ -56,7 +56,7 @@ class EarningsEstimates:
 
     """-------------------------------"""
 
-    def get_earnings_estimates(self, frequency: str = "q"):
+    def query_earnings_estimates(self, frequency: str = "q"):
         if frequency in self.quarterly_params:
             frequency = "quarterlyEarnings"
         elif frequency in self.annual_params:
@@ -107,7 +107,7 @@ class EarningsEstimates:
 
         except FileNotFoundError as e:
             print(f"[Error] {e}")
-            earnings = self.get_earnings_estimates(frequency)
+            earnings = self.query_earnings_estimates(frequency)
             earnings.to_csv(self.base_export_path, header=True, index=False)
             return earnings
 
